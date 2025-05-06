@@ -1,0 +1,26 @@
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import  confusion_matrix, classification_report
+data = sns.load_dataset("iris")
+data.head()
+X = data.drop(columns=["species"])
+y = data["species"]
+X.shape, y.shape
+X_train, X_test, y_train, y_test = train_test_split(X,y,shuffle=True,random_state=1,stratify=y)
+model = LogisticRegression()
+model.fit(X_train, y_train)
+y_preds = model.predict(X_test)
+def evaluate(model,y_true = y_test, y_preds = y_preds):
+    matrix = confusion_matrix(y_true, y_preds)
+    acc = accuracy_score(y_true, y_preds)
+    precision = precision_score(y_true, y_preds, average="weighted")
+    recall = recall_score(y_true, y_preds, average="weighted")
+    f1 = f1_score(y_true, y_preds, average="weighted")
+    print(f"confusion matrix:\n{matrix}\n\n")
+    print(f"accuracy score:{acc} | precision_score:{precision} | recall_score:{recall} | f1_score:{f1}\n\n")
+    print(f"classification report:\n{classification_report(y_true, y_preds)}")
+evaluate(model)

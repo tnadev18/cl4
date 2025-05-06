@@ -1,0 +1,16 @@
+import os
+os.listdir()
+
+target_word = "Girish"
+def map_reduce(file_path, target_word):
+    word_count = 0
+    with open(file_path,"r") as file:
+        for line in file:
+            words = line.split()
+            word_count += sum(1 for word in words if 
+word.lower()==target_word.lower())
+    return word_count
+file_path = 'G:\Dataset CL 4\Dataset CL 4\word-freq.txt'
+target_word = "Girish"
+freq = map_reduce(file_path, target_word)
+print(f"Word '{target_word}' appears {freq} times in the given document")

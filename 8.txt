@@ -1,0 +1,53 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import fetch_openml
+
+def load_titanic_data():
+    try:
+        df = sns.load_dataset("titanic")  # Load using Seaborn
+    except:
+        titanic = fetch_openml('titanic', version=1, as_frame=True)
+        df = titanic.data
+    return df
+
+def map_reduce_with_pandas(df):
+    # Map: Filter deceased males and transform data for average age calculation
+    deceased_males = df[(df['survived'] == 0) & (df['sex'] == 'male')]
+
+    # Reduce: Calculate average age of deceased males
+    average_age_deceased_males = deceased_males['age'].mean()
+
+    # Map: Filter deceased females and transform data for count by class
+    deceased_females_by_class = df[(df['survived'] == 0) & (df['sex'] == 'female')]
+
+    # Reduce: Count deceased females by class
+    count_deceased_females_by_class = deceased_females_by_class['class'].value_counts()
+
+    # Visualization 1: Age distribution of deceased males
+    plt.figure(figsize=(8, 5))
+    sns.histplot(deceased_males['age'].dropna(), bins=15, kde=True, color='blue')
+    plt.title('Age Distribution of Deceased Males')
+    plt.xlabel('Age')
+    plt.ylabel('Frequency')
+    plt.show()
+
+    # Visualization 2: Count of deceased females by class
+    plt.figure(figsize=(8, 5))
+    sns.barplot(x=count_deceased_females_by_class.index, y=count_deceased_females_by_class.values, palette='coolwarm')
+    plt.title('Count of Deceased Females by Class')
+    plt.xlabel('Class')
+    plt.ylabel('Count')
+    plt.show()
+
+    return average_age_deceased_males, count_deceased_females_by_class
+
+# Load dataset
+df = load_titanic_data()
+
+# Process dataset
+average_age, female_class_count = map_reduce_with_pandas(df)
+
+print(f"Average age of males who died: {average_age:.2f}")
+print("Number of deceased females in each class:")
+print(female_class_count)
