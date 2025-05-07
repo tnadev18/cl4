@@ -1,0 +1,77 @@
+1. Create (Insert)
+Insert a single document:
+
+  db.users.insertOne({ name: "Alice", age: 30, city: "Pune" });
+Insert multiple documents:
+
+
+  db.users.insertMany([
+    { name: "Bob", age: 25, city: "Mumbai" },
+    { name: "Charlie", age: 35, city: "Delhi" }
+  ]);
+These operations add new documents to the users collection.
+
+
+
+
+
+
+
+2. Read (Query)
+Retrieve all documents:
+
+  db.users.find();
+Find documents with a specific condition:
+
+
+  db.users.find({ city: "Pune" });
+Find a single document:
+
+  db.users.findOne({ name: "Alice" });
+These queries fetch documents from the users collection based on specified criteria.
+
+
+
+
+
+
+ 3. Update
+Update a single document:
+
+
+  db.users.updateOne(
+    { name: "Alice" },
+    { $set: { age: 31 } }
+  );
+Update multiple documents:
+
+  db.users.updateMany(
+    { city: "Mumbai" },
+    { $set: { city: "Bangalore" } }
+  );
+Replace an entire document:
+
+  db.users.replaceOne(
+    { name: "Charlie" },
+    { name: "Charlie", age: 36, city: "Chennai" }
+  );
+These operations modify existing documents in the users collection. 
+MongoDB
+
+
+
+
+
+
+
+
+4. Delete
+Delete a single document:
+
+
+  db.users.deleteOne({ name: "Alice" });
+Delete multiple documents:
+
+
+  db.users.deleteMany({ city: "Bangalore" });
+These commands remove documents from the users collection.
